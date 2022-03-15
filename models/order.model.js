@@ -46,13 +46,13 @@ module.exports = db.sequelize.define(
             type: Sequelize.STRING
         },
         order_status_last_update: {
-            type: Sequelize.STRING
+            type: Sequelize.DATE
         },
         delivery_status: {
             type: Sequelize.STRING
         },
         delivery_status_last_update: {
-            type: Sequelize.STRING
+            type: Sequelize.DATE
         },
         print_status: {
             type: Sequelize.STRING

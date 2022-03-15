@@ -43,7 +43,7 @@ const client_orderData = {
             let token = jwt.sign(client_order.dataValues, process.env.SECRET_KEY, {
               expiresIn: 1440
             })
-            res.json({ token: token })   
+            res.json({ token: token }) 
           })
     .catch(err => {
       res.send('error: ' + err)
@@ -504,9 +504,12 @@ router.get('/get-unavailable-clients', (req, res, next)=>{
       ['registration_date', 'DESC'], // Sorts by id in descending order
   ],
     // attributes:['order_id','shopify_order_id', 'names','client_phone_number','delivery_address','watch_brand_and_model','order_date'],
-    where: {
-    order_treatement: 'treated',
-    order_status: 'unavailable'
+  //   where: {
+  //   order_treatement: 'treated',
+  //   order_status: 'unavailable'
+  // }
+  where: {
+    order_treatment: 'not-treated'
   }
 
   })
@@ -529,12 +532,12 @@ router.get('/get-reservations', (req, res, next)=>{
       ['registration_date', 'DESC'], // Sorts by id in descending order
   ],
     // attributes:['order_id','shopify_order_id', 'names','client_phone_number','delivery_address','watch_brand_and_model','order_date'],
-    where: {
-    order_treatement: 'treated',
-    order_status:'reservation'
-    // order_status: {
-    //   [Op.or]: ['confirmed', 'delivered', 'in-delivery']
-    // }
+  //   where: {
+  //   order_treatement: 'treated',
+  //   order_status:'reservation'
+  // }
+  where: {
+    order_treatment: 'not-treated'
   }
   })
   .then(client_order => {
@@ -556,15 +559,17 @@ router.get('/get-delivered-orders', (req, res, next)=>{
   ],
   attributes:['order_id','shopify_order_id','names','client_phone_number','delivery_address','watch_brand_and_model','order_date','comment','order_status',
   'delivery_date','delivery_status','payment_status','print_status'],
+  // where: {
+  //   order_treatement: 'treated',
+  //   order_status: {
+  //     [Op.or]: ['confirmed']
+  //   },
+  //   delivery_status: {
+  //     [Op.or]: ['delivered']
+  //   }
+  // }
   where: {
-    order_treatement: 'treated',
-    order_status: {
-      [Op.or]: ['confirmed']
-    },
-    delivery_status: {
-      [Op.or]: ['delivered']
-    }
-   
+    order_treatment: 'not-treated'
   }
 })
 .then(client_order => {
@@ -587,14 +592,18 @@ router.get('/get-confirmed-orders', (req, res, next)=>{
   ],
   attributes:['order_id','shopify_order_id','names','client_phone_number','delivery_address','watch_brand_and_model','order_date','comment','order_status',
   'delivery_date','delivery_status','payment_status','print_status'],
+  // where: {
+  //   order_treatement: 'treated',
+  //   order_status: {
+  //     [Op.or]: ['confirmed']
+  //   },
+  //   delivery_status: {
+  //       [Op.or]: ['in-preparation']
+  //     }
+  // }
+
   where: {
-    order_treatement: 'treated',
-    order_status: {
-      [Op.or]: ['confirmed']
-    },
-    delivery_status: {
-        [Op.or]: ['in-preparation']
-      }
+    order_treatment: 'not-treated'
   }
 
   })
